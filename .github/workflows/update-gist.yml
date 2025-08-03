@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Fetch CSV and convert to JSON
         run: |
-          curl -s "https://docs.google.com/spreadsheets/d/e/2PACX-1vT2NO2UixNebAWUPDGb1-q5Y3z7f4pPMA8zJFVdRUCrP0FQWd2FuOsVwFMlmjtZyMzan-8v6wD6Cc84/pub?gid=615117949&single=true&output=csv" -o utopia.csv
+          curl -sL "https://docs.google.com/spreadsheets/d/e/2PACX-1vT2NO2UixNebAWUPDGb1-q5Y3z7f4pPMA8zJFVdRUCrP0FQWd2FuOsVwFMlmjtZyMzan-8v6wD6Cc84/pub?gid=615117949&single=true&output=csv" -o utopia.csv
       
           echo '{ "type": "module" }' > package.json
       
