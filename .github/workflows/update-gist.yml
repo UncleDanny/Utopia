@@ -1,0 +1,56 @@
+name: Update Utopia Gist
+
+on:
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch CSV and convert to JSON
+        run: |
+          curl -sL "https://docs.google.com/spreadsheets/d/e/2PACX-1vT2NO2UixNebAWUPDGb1-q5Y3z7f4pPMA8zJFVdRUCrP0FQWd2FuOsVwFMlmjtZyMzan-8v6wD6Cc84/pub?gid=615117949&single=true&output=csv" -o utopia.csv
+      
+          echo '{ "type": "module" }' > package.json
+      
+          cat << EOF > convert.mjs
+          import fs from "fs";
+
+          const csv = fs.readFileSync("utopia.csv", "utf-8").trim().split(/\r?\n/);
+          console.log(`Read ${csv.length} lines from CSV`);
+          
+          const [headerLine, ...lines] = csv;
+          const headers = headerLine.split(",").map(h => h.trim());
+          console.log("Headers:", headers);
+          
+          const dataset = {};
+          for (const line of lines) {
+            const values = line.split(",").map(v => v.trim());
+            if (values.length !== headers.length) {
+              console.warn("Skipping malformed line:", line);
+              continue;
+            }
+            const entry = Object.fromEntries(headers.map((h, i) => [h, values[i] || ""]));
+            const { Date: date, UID: uid } = entry;
+          
+            if (!date || !uid) {
+              console.warn("Skipping entry with missing Date or UID:", entry);
+              continue;
+            }
+          
+            if (!dataset[date]) dataset[date] = {};
+            dataset[date][uid] = entry;
+          }
+          
+          console.log(`Parsed dataset with ${Object.keys(dataset).length} dates`);
+          fs.writeFileSync("utopia.json", JSON.stringify(dataset, null, 2));
+          EOF
+      
+          node convert.mjs
+
+      - name: Update Gist
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gist_id: df83f58ece59cb4b35d830fd40594b67
+          file_path: utopia.json
