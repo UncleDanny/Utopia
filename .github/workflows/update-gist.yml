@@ -11,19 +11,17 @@ jobs:
     steps:
       - name: Fetch CSV and convert to JSON
         run: |
-          curl -s "https://docs.google.com/spreadsheets/d/e/2PACX-1vT2NO2UixNebAWUPDGb1-q5Y3z7f4pPMA8zJFVdRUCrP0FQWd2FuOsVwFMlmjtZyMzan-8v6wD6Cc84/pub?gid=615117949&single=true&output=csv" -o utopia.csv
-          
-          echo '{
-            "type": "module"
-          }' > package.json
-
-          echo '
+          curl -s "https://docs.google.com/spreadsheets/d/e/2PACX-1vT2NO2UixNebAWUPDGb1-q5Y3z7f4pMA8zJFVdRUCrP0FQWd2FuOsVwFMlmjtZyMzan-8v6wD6Cc84/pub?gid=615117949&single=true&output=csv" -o utopia.csv
+      
+          echo '{ "type": "module" }' > package.json
+      
+          cat << EOF > convert.mjs
           import fs from "fs";
-
+      
           const csv = fs.readFileSync("utopia.csv", "utf-8").trim().split("\\n");
           const [headerLine, ...lines] = csv;
           const headers = headerLine.split(",");
-
+      
           const dataset = {};
           for (const line of lines) {
             const values = line.split(",");
@@ -32,11 +30,12 @@ jobs:
             if (!dataset[date]) dataset[date] = {};
             dataset[date][uid] = entry;
           }
-
+      
           fs.writeFileSync("utopia.json", JSON.stringify(dataset, null, 2));
-          ' > convert.mjs
-
+          EOF
+      
           node convert.mjs
+
 
       - name: Update Gist
         uses: exuanbo/actions-deploy-gist@v1
