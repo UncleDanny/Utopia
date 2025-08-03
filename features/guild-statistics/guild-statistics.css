@@ -138,7 +138,6 @@ td:has(.compare-arrow) {
 
 .compare-arrow {
     visibility: hidden;
-    width: 12px;
 }
 
 .comparing .compare-arrow {
@@ -195,22 +194,23 @@ td:has(.compare-arrow) {
 }
 
 .user-card-header {
-    display: grid;
+    display: flex;
     text-align: center;
-    grid-template-columns: 1fr 0.5fr 1fr;
     gap: 4px;
 }
 
 .user-card-header div {
     background: var(--color-secondary-light);
-    text-wrap: nowrap;
     font-weight: bold;
+    white-space: nowrap;
+    flex: 1;
 }
 
 .user-card-content {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
+    column-gap: 8px;
+    row-gap: 4px;
     margin-top: 8px;
 }
 
@@ -340,10 +340,6 @@ td:has(.compare-arrow) {
         gap: 12px;
     }
 
-    .compare-arrow {
-        width: 10px;
-    }
-
     .user-compare-table {
         display: none;
     }
@@ -357,22 +353,36 @@ td:has(.compare-arrow) {
     }
 
     .stat-row {
-        display: grid;
-        align-items: center;
-        grid-template-columns: repeat(3, 1fr);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .stat-label,
+    .stat-value-container {
+        flex: 1;
     }
 
     .stat-label {
         font-weight: bold;
         color: var(--color-text-secondary);
         min-width: 55px;
+        background: var(--color-primary-dark);
+        text-align: center;
+    }
+
+    .stat-value-container {
+        display: flex;
+        min-width: 65px;
+        font-weight: 600;
     }
 
     .stat-value {
-        display: flex;
         align-items: center;
-        font-weight: 600;
-        min-width: 65px;
+    }
+
+    .compare-arrow {
+        margin-left: auto;
     }
 }
 

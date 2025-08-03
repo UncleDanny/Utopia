@@ -63,8 +63,13 @@ export class UserCard {
         row.className = 'stat-row';
 
         row.appendChild(this.createTextElement('stat-label', labelText));
-        row.appendChild(this.createTextElement('stat-value', isPowerStat ? Utils.formatPower(value) : value, 'span'));
-        row.appendChild(this.createArrow(this.mainEntry, this.otherEntry, statKey));
+
+        const valueContainer = document.createElement('div');
+        valueContainer.className = 'stat-value-container';
+
+        valueContainer.appendChild(this.createTextElement('stat-value', isPowerStat ? Utils.formatPower(value) : value, 'span'));
+        valueContainer.appendChild(this.createArrow(this.mainEntry, this.otherEntry, statKey));
+        row.appendChild(valueContainer);
 
         return row;
     }
@@ -72,6 +77,11 @@ export class UserCard {
     createGrowthRow(labelText, growthValue, statKey, isInteger = false) {
         const row = document.createElement('div');
         row.className = 'stat-row';
+
+        row.appendChild(this.createTextElement('stat-label', labelText));
+
+        const valueContainer = document.createElement('div');
+        valueContainer.className = 'stat-value-container';
 
         const valueElem = document.createElement('span');
         valueElem.className = 'stat-value';
@@ -86,13 +96,13 @@ export class UserCard {
             valueElem.textContent = parsed > 0 ? `+${formatted}` : `${formatted}`;
         }
 
-        row.appendChild(this.createTextElement('stat-label', labelText));
-        row.appendChild(valueElem);
+        valueContainer.appendChild(valueElem);
 
         if (growthValue !== '') {
-            row.appendChild(this.createArrow(this.mainEntry, this.otherEntry, statKey));
+            valueContainer.appendChild(this.createArrow(this.mainEntry, this.otherEntry, statKey));
         }
 
+        row.appendChild(valueContainer);
         return row;
     }
 }
