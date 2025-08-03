@@ -50,11 +50,11 @@ export class Selector {
             const itemEl = document.createElement('div');
             itemEl.className = 'selector-item';
             itemEl.textContent = this.getItemText(item);
-            itemEl.onclick = () => {
+            itemEl.addEventListener('mousedown', () => {
                 this.input.value = this.getItemText(item);
                 this.list.style.display = 'none';
                 this.onSelect(item);
-            };
+            });
             this.list.appendChild(itemEl);
         });
         this.list.style.display = items.length ? 'block' : 'none';
