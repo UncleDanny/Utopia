@@ -2,8 +2,6 @@ name: Update Utopia Gist
 
 on:
   workflow_dispatch: # allow manual trigger
-  schedule:
-    - cron: '0 0 1 * *' # monthly on the 1st at midnight UTC
 
 jobs:
   update:
@@ -17,25 +15,38 @@ jobs:
       
           cat << EOF > convert.mjs
           import fs from "fs";
-      
-          const csv = fs.readFileSync("utopia.csv", "utf-8").trim().split("\\n");
+
+          const csv = fs.readFileSync("utopia.csv", "utf-8").trim().split(/\r?\n/);
+          console.log(`Read ${csv.length} lines from CSV`);
+          
           const [headerLine, ...lines] = csv;
-          const headers = headerLine.split(",");
-      
+          const headers = headerLine.split(",").map(h => h.trim());
+          console.log("Headers:", headers);
+          
           const dataset = {};
           for (const line of lines) {
-            const values = line.split(",");
-            const entry = Object.fromEntries(headers.map((h, i) => [h.trim(), values[i]?.trim() || ""]));
+            const values = line.split(",").map(v => v.trim());
+            if (values.length !== headers.length) {
+              console.warn("Skipping malformed line:", line);
+              continue;
+            }
+            const entry = Object.fromEntries(headers.map((h, i) => [h, values[i] || ""]));
             const { Date: date, UID: uid } = entry;
+          
+            if (!date || !uid) {
+              console.warn("Skipping entry with missing Date or UID:", entry);
+              continue;
+            }
+          
             if (!dataset[date]) dataset[date] = {};
             dataset[date][uid] = entry;
           }
-      
+          
+          console.log(`Parsed dataset with ${Object.keys(dataset).length} dates`);
           fs.writeFileSync("utopia.json", JSON.stringify(dataset, null, 2));
           EOF
       
           node convert.mjs
-
 
       - name: Update Gist
         uses: exuanbo/actions-deploy-gist@v1
