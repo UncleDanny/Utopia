@@ -1,16 +1,12 @@
 import { allUniqueDates, usersByGuildByDate } from '../dataset.js';
 import { Utils } from '../utils.js';
 import { Selector } from '../components/selector.js';
+import { Constants } from '../constants.js'
 
 if (!window.Tabs) {
     window.Tabs = {};
 }
 
-const GUILD_ORDER = ["Sanctum", "Halcyon", "Serenity", "Avalon", "Arcadia"];
-const MONTH_NAMES = [
-    'january', 'february', 'march', 'april', 'may', 'june',
-    'july', 'august', 'september', 'october', 'november', 'december'
-];
 window.Tabs.Overview = {
     render: function (container) {
         this.Content = container;
@@ -34,7 +30,7 @@ window.Tabs.Overview = {
         const dateFilter = (dates, val) => {
             return dates.filter(dateStr => {
                 const [month, day, year] = dateStr.split('/');
-                const monthName = MONTH_NAMES[+month - 1] || '';
+                const monthName = Constants.MONTH_NAMES[+month - 1] || '';
                 const normalized = `${monthName} ${day} ${year}`.toLowerCase();
                 return dateStr.toLowerCase().includes(val) || normalized.includes(val);
             });
@@ -75,7 +71,7 @@ window.Tabs.Overview = {
             return;
         }
 
-        const orderedGuilds = GUILD_ORDER
+        const orderedGuilds = Constants.GUILD_ORDER
             .map(name => [name, this.UsersByGuild[name]])
             .filter(([_, users]) => users);
 

@@ -2,20 +2,11 @@ import { allUniqueUsers, allUniqueDates, usersByDate } from '../dataset.js';
 import { Utils } from '../utils.js';
 import { UserCard } from '../components/user-card.js';
 import { Selector } from '../components/selector.js';
+import { Constants } from '../constants.js'
 
 if (!window.Tabs) {
     window.Tabs = {};
 }
-
-const COLUMN_CONFIG = [
-    { key: 'Date', label: 'Date', type: 'date' },
-    { key: 'Guild', label: 'Guild', type: 'text' },
-    { key: 'Name', label: 'Name', type: 'text' },
-    { key: 'Power', label: 'Power', type: 'number' },
-    { key: 'Chapter', label: 'Chapter', type: 'number' },
-    { key: 'Power Growth', label: 'Power Growth', type: 'growth' },
-    { key: 'Chapter Growth', label: 'Chapter Growth', type: 'growth' }
-];
 
 window.Tabs.Users = {
     render: function (container) {
@@ -158,7 +149,7 @@ window.Tabs.Users = {
 
         const thead = table.createTHead();
         const headerRow = thead.insertRow();
-        COLUMN_CONFIG.forEach(col => {
+        Constants.COLUMN_CONFIG.forEach(col => {
             const th = document.createElement('th');
             th.textContent = col.label;
             headerRow.appendChild(th);
@@ -175,7 +166,7 @@ window.Tabs.Users = {
                 row.classList.add('row-empty');
             }
 
-            COLUMN_CONFIG.forEach(col => {
+            Constants.COLUMN_CONFIG.forEach(col => {
                 const td = row.insertCell();
                 let value = mainEntry?.[col.key];
 
