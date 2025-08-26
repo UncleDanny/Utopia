@@ -13,7 +13,7 @@ const TAB_LIST = [
 
     for (const tab of TAB_LIST) {
         try {
-            await import(`/features/guild-statistics/tabs/${tab.name}/${tab.name}.js`);
+            await import(`../../features/guild-statistics/tabs/${tab.name}/${tab.name}.js`);
 
             const tabKey = tab.name.charAt(0).toUpperCase() + tab.name.slice(1);
             if (window.Tabs?.[tabKey]?.render) {
@@ -23,7 +23,7 @@ const TAB_LIST = [
 
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = `/features/guild-statistics/tabs/${tab.name}/${tab.name}.css`;
+            link.href = `../../features/guild-statistics/tabs/${tab.name}/${tab.name}.css`;
             document.head.appendChild(link);
         } catch (err) {
             console.error(`Failed to load tab: ${tab.name}`, err);
