@@ -1,0 +1,40 @@
+.guild-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+    height: 100%;
+}
+
+.guild-card {
+    flex: 1 1 500px;
+    padding: 8px;
+    max-width: 500px;
+    margin: auto auto;
+}
+
+.guild-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.25rem;
+}
+
+.guild-card-header {
+    text-align: center;
+    background: var(--color-primary);
+    font-weight: 700;
+    margin: 0.5rem 0;
+}
+
+.guild-card-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: 1rem;
+}
+
+.guild-card-label {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}

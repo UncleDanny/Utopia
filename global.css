@@ -105,71 +105,24 @@ input:focus {
     background: var(--color-secondary);
 }
 
-/* Main screen cards */
-.main-card-wrapper {
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
+.positive {
+    color: var(--color-success);
 }
 
-.main-card {
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
-    width: 250px;
-    height: 250px;
-    box-shadow: 0 4px 12px var(--color-shadow);
-    transition: box-shadow 0.3s ease, background-color 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.negative {
+    color: var(--color-error);
 }
 
-.main-card-link {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    color: var(--color-text-primary);
-    font-size: 1.5rem;
-    font-weight: 600;
-    width: 100%;
-    height: 100%;
-    padding: 1rem;
-    border-radius: var(--border-radius);
-    user-select: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    gap: 0.75rem;
+.neutral {
+    color: var(--color-muted);
 }
 
-.main-card-icon {
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    filter: drop-shadow(1.5px 1.5px 2px var(--color-shadow));
-}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
 
-.main-card-text {
-    filter: drop-shadow(1.5px 1.5px 2px var(--color-shadow));
-}
-
-.main-card-link:hover,
-.main-card-link:focus {
-    background-color: var(--color-primary-light);
-    color: #fff;
-    outline: none;
-    box-shadow: 0 0 8px var(--color-primary-light);
-}
-
-.main-card-link:focus-visible {
-    outline: 2px solid var(--color-primary-light);
-    outline-offset: 2px;
-}
-
-.main-card-link:hover {
-    transform: scale(1.1);
-    transition: transform 0.3s ease;
+    to {
+        opacity: 1;
+    }
 }

@@ -1,29 +1,12 @@
-import { allUniqueUsers, allUniqueDates, usersByDate } from '../dataset.js';
-import { Utils } from '../utils.js';
-import { UserCard } from '../components/user-card.js';
-import { Selector } from '../components/selector.js';
-import { Constants } from '../constants.js'
+import { allUniqueUsers, allUniqueDates, usersByDate } from '../../dataset.js';
+import { BaseTab } from '../base-tab.js';
+import '../../components/selector/selector.js';
+import '../../components/user-card/user-card.js';
 
-if (!window.Tabs) {
-    window.Tabs = {};
-}
-
-window.Tabs.Users = {
-    render: function (container) {
-        this.Content = container;
-        this.Content.replaceChildren();
-
-        this.renderToolbar();
-        this.renderContainers();
-    },
-
-    renderToolbar: function () {
-        this.Toolbar = document.createElement('div');
-        this.Toolbar.className = 'toolbar';
-        this.Content.appendChild(this.Toolbar);
-
-        this.Toolbar.appendChild(this.renderUserSelector(allUniqueUsers, user => {
-            this.LeftPanel.Id = user.UID;
+class UserTab extends BaseTab {
+    renderToolbarContent() {
+        this.Toolbar.appendChild(this.renderUserSelector(allUniqueUsers, e => {
+            this.LeftPanel.Id = e.detail.item.UID;
             this.update();
         }));
 
@@ -33,25 +16,28 @@ window.Tabs.Users = {
         compareButton.onclick = () => {
             const compareMode = this.Content.classList.toggle('comparing');
             compareButton.textContent = compareMode ? 'Exit Compare Mode' : 'Compare Mode';
+            document.querySelectorAll('user-card').forEach(card => {
+                card.showArrows(compareMode);
+            });
         };
         this.Toolbar.appendChild(compareButton);
 
-        this.Toolbar.appendChild(this.renderUserSelector(allUniqueUsers, user => {
-            this.RightPanel.Id = user.UID;
+        this.Toolbar.appendChild(this.renderUserSelector(allUniqueUsers, e => {
+            this.RightPanel.Id = e.detail.item.UID;
             this.update();
         }));
-    },
+    }
 
-    renderUserSelector: function (users, onSelect) {
-        return new Selector({
-            items: users,
-            placeholder: 'Select name...',
-            getItemText: user => user.Name,
-            onSelect: onSelect
-        }).render();
-    },
+    renderUserSelector(users, onSelect) {
+        const selector = document.createElement('item-selector');
+        selector.items = users;
+        selector.placeholder = 'Select name...';
+        selector.formatItem = user => user.Name;
+        selector.addEventListener('select', onSelect);
+        return selector;
+    }
 
-    renderContainers: function () {
+    renderContent() {
         const compareContainer = document.createElement('div');
         compareContainer.className = 'compare-container';
         this.Content.appendChild(compareContainer);
@@ -91,9 +77,9 @@ window.Tabs.Users = {
         this.RightPanel = document.createElement('div');
         this.RightPanel.className = 'compare-panel';
         compareContainer.appendChild(this.RightPanel);
-    },
+    }
 
-    update: function () {
+    update() {
         const leftPanel = this.LeftPanel;
         const rightPanel = this.RightPanel;
 
@@ -141,15 +127,15 @@ window.Tabs.Users = {
         };
 
         this.updateCardNavigation();
-    },
+    }
 
-    displayComparisonTable: function (panel, mainMap, otherMap, allDates) {
+    displayComparisonTable(panel, mainMap, otherMap, allDates) {
         const table = document.createElement('table');
         table.className = 'user-compare-table';
 
         const thead = table.createTHead();
         const headerRow = thead.insertRow();
-        Constants.COLUMN_CONFIG.forEach(col => {
+        this.Constants.COLUMN_CONFIG.forEach(col => {
             const th = document.createElement('th');
             th.textContent = col.label;
             headerRow.appendChild(th);
@@ -166,7 +152,7 @@ window.Tabs.Users = {
                 row.classList.add('row-empty');
             }
 
-            Constants.COLUMN_CONFIG.forEach(col => {
+            this.Constants.COLUMN_CONFIG.forEach(col => {
                 const td = row.insertCell();
                 let value = mainEntry?.[col.key];
 
@@ -177,12 +163,12 @@ window.Tabs.Users = {
                 }
 
                 if (col.type === 'date') {
-                    td.textContent = Utils.formatDate(value);
+                    td.textContent = this.Utils.formatDate(value);
                 } else if (col.type === 'number' || col.type == 'growth') {
                     let displayValue = value;
                     if (col.type === 'number') {
                         if (col.key === 'Power') {
-                            displayValue = Utils.formatPower(value);
+                            displayValue = this.Utils.formatPower(value);
                         }
 
                         td.style.textAlign = 'right';
@@ -192,7 +178,7 @@ window.Tabs.Users = {
                             td.classList.add('cell-empty');
                             displayValue = '-';
                         } else {
-                            const formatted = col.key === 'Chapter Growth' ? parseInt(parsed).toLocaleString() : Utils.formatPower(parsed);
+                            const formatted = col.key === 'Chapter Growth' ? parseInt(parsed).toLocaleString() : this.Utils.formatPower(parsed);
                             td.classList.add(parsed > 0 ? 'positive' : 'negative');
                             displayValue = parsed > 0 ? `+${formatted}` : `${formatted}`;
                             td.style.textAlign = 'right';
@@ -220,9 +206,9 @@ window.Tabs.Users = {
 
         tbody.appendChild(fragment);
         panel.appendChild(table);
-    },
+    }
 
-    displayCards: function (panel, mainMap, otherMap, allDates) {
+    displayCards(panel, mainMap, otherMap, allDates) {
         const container = document.createElement('div');
         container.className = 'user-card-wrapper';
 
@@ -239,7 +225,11 @@ window.Tabs.Users = {
 
             let card = null;
             if (Object.keys(mainMap).length > 0) {
-                card = new UserCard(mainEntry, otherEntry, date, this.createArrow).render();
+                card = document.createElement('user-card');
+                card.mainEntry = mainEntry;
+                card.otherEntry = otherEntry;
+                card.date = date;
+                card.createArrow = this.createArrow;
             } else {
                 card = document.createElement('div');
                 card.className = 'card user-card';
@@ -256,9 +246,9 @@ window.Tabs.Users = {
         });
 
         return cards;
-    },
+    }
 
-    updateCardNavigation: function () {
+    updateCardNavigation() {
         const { index, dates, leftCards, rightCards } = this.cardState;
 
         leftCards.forEach((c, i) => c.style.display = i === index ? 'flex' : 'none');
@@ -266,9 +256,9 @@ window.Tabs.Users = {
 
         if (this.arrowLeft) this.arrowLeft.disabled = index === 0;
         if (this.arrowRight) this.arrowRight.disabled = index === dates.length - 1;
-    },
+    }
 
-    createArrow: function (mainEntry, otherEntry, column) {
+    createArrow(mainEntry, otherEntry, column) {
         const arrow = document.createElement('span');
         arrow.className = 'compare-arrow';
         if (!otherEntry) {
@@ -306,4 +296,10 @@ window.Tabs.Users = {
 
         return arrow;
     }
-};
+}
+
+if (!window.Tabs) {
+    window.Tabs = {};
+}
+
+window.Tabs.Users = new UserTab();

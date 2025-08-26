@@ -5,10 +5,6 @@ th {
     z-index: 2;
 }
 
-td:has(.compare-arrow) {
-    white-space: nowrap;
-}
-
 /* Layout containers */
 #container {
     display: flex;
@@ -89,96 +85,7 @@ td:has(.compare-arrow) {
     width: 150px;
 }
 
-.selector-wrapper {
-    position: relative;
-    max-width: 340px;
-    width: 100%;
-}
-
-.selector-input {
-    width: 100%;
-}
-
-.selector-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    max-height: 220px;
-    overflow-y: auto;
-    background: var(--color-secondary-dark);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 4px 24px var(--color-shadow);
-    z-index: 10;
-    display: none;
-}
-
-/* Dropdown item */
-.selector-item {
-    padding: 10px 16px;
-    cursor: pointer;
-    border-bottom: 1px solid var(--color-border);
-    transition: background 0.2s;
-}
-
-.selector-item:last-child {
-    border-bottom: none;
-}
-
-.selector-item:hover,
-.selector-item.active {
-    background: var(--color-secondary);
-}
-
-.compare-container {
-    display: grid;
-    gap: 32px;
-    grid-template-columns: auto auto;
-}
-
-.compare-arrow {
-    visibility: hidden;
-}
-
-.comparing .compare-arrow {
-    visibility: visible;
-}
-
-.user-compare-table {
-    margin-top: 16px;
-    table-layout: fixed;
-}
-
-.user-compare-table tr,
-.user-compare-table td,
-.user-compare-table th {
-    height: 44px;
-    vertical-align: middle;
-}
-
-.user-compare-table tr.row-empty td {
-    background: var(--color-secondary);
-    color: var(--color-muted);
-    text-align: center;
-}
-
-.user-compare-table td.cell-empty {
-    color: var(--color-muted);
-    text-align: center;
-}
-
-.user-card-wrapper {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    margin: 1rem auto;
-}
-
-.user-card-container {
-    width: 100%;
-    max-width: 400px;
-}
-
+/* ------ */
 .card {
     border-radius: var(--border-radius);
     background: var(--color-secondary-dark);
@@ -193,33 +100,6 @@ td:has(.compare-arrow) {
     min-height: 100px;
 }
 
-.user-card-header {
-    display: flex;
-    text-align: center;
-    gap: 4px;
-}
-
-.user-card-header div {
-    background: var(--color-secondary-light);
-    font-weight: bold;
-    white-space: nowrap;
-    flex: 1;
-}
-
-.user-card-content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 8px;
-    row-gap: 4px;
-    margin-top: 8px;
-}
-
-.user-card-power-growth,
-.user-card-chapter-growth {
-    text-align: right;
-}
-
-.user-card-no-data,
 .user-card-no-user {
     padding: 1.5rem;
     text-align: center;
@@ -227,94 +107,7 @@ td:has(.compare-arrow) {
     font-style: italic;
 }
 
-.user-card-navigation {
-    display: none;
-    margin-top: 1rem;
-    justify-content: center;
-    gap: 1.5rem;
-}
-
-.arrow-left,
-.arrow-right {
-    font-size: 1.25rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    background-color: var(--color-primary);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.arrow-left:disabled,
-.arrow-right:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.positive {
-    color: var(--color-success);
-}
-
-.negative {
-    color: var(--color-error);
-}
-
-.neutral {
-    color: var(--color-muted);
-}
-
-.value-container {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    gap: 4px;
-}
-
-.value-text {
-    flex: 1;
-}
-
-.guild-card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin: 1rem 0;
-    height: 100%;
-}
-
-.guild-card {
-    flex: 1 1 500px;
-    padding: 8px;
-    max-width: 500px;
-    margin: auto auto;
-}
-
-.guild-card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 0.25rem;
-}
-
-.guild-card-header {
-    text-align: center;
-    background: var(--color-primary);
-    font-weight: 700;
-    margin: 0.5rem 0;
-}
-
-.guild-card-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    margin-left: 1rem;
-}
-
-.guild-card-label {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
+/* ------ */
 
 /* Responsive */
 @media (max-width: 1300px) {
@@ -322,7 +115,7 @@ td:has(.compare-arrow) {
         flex-direction: column;
         align-items: stretch;
         height: auto;
-        min-width: 200px;
+        min-width: 170px;
         max-width: 400px;
         margin: 0 auto;
     }
@@ -330,65 +123,12 @@ td:has(.compare-arrow) {
     .toolbar .compare-button {
         width: 100%;
     }
-
-    .selector-wrapper {
-        max-width: none;
-    }
-
-    .compare-container {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .user-compare-table {
-        display: none;
-    }
-
-    .user-card-wrapper {
-        display: flex;
-    }
-
-    .user-card-navigation {
-        display: flex;
-    }
-
-    .stat-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-    }
-
-    .stat-label,
-    .stat-value-container {
-        flex: 1;
-    }
-
-    .stat-label {
-        font-weight: bold;
-        color: var(--color-text-secondary);
-        min-width: 55px;
-        background: var(--color-primary-dark);
-        text-align: center;
-    }
-
-    .stat-value-container {
-        display: flex;
-        min-width: 65px;
-        font-weight: 600;
-    }
-
-    .stat-value {
-        align-items: center;
-    }
-
-    .compare-arrow {
-        margin-left: auto;
-    }
 }
 
 @media (max-width: 700px) {
     #tab-content {
-        margin-left: 16px;
+        margin: 8px;
+        padding: 8px;
     }
 
     #container {
@@ -410,16 +150,7 @@ td:has(.compare-arrow) {
         flex: 1;
         border-radius: 0;
         margin: 0;
+        padding: 8px;
         box-shadow: none;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
     }
 }

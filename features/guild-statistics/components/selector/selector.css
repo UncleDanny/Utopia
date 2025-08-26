@@ -1,0 +1,64 @@
+:host {
+    position: relative;
+    max-width: 340px;
+    width: 100%;
+    display: block;
+}
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+.selector-input {
+    width: 100%;
+    background: var(--color-primary);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 8px 12px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s, background 0.2s;
+}
+
+.selector-input:focus {
+    background: var(--color-secondary);
+}
+
+.selector-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background: var(--color-secondary-dark);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 24px var(--color-shadow);
+    z-index: 10;
+    display: none;
+}
+
+.selector-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-border);
+    transition: background 0.2s;
+}
+
+.selector-item:last-child {
+    border-bottom: none;
+}
+
+.selector-item:hover,
+.selector-item.active {
+    background: var(--color-secondary);
+}
+
+@media (max-width: 1300px) {
+    :host {
+        max-width: none;
+    }
+}
