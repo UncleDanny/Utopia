@@ -1,6 +1,6 @@
 class UtopiaDataset {
     constructor() {
-        this.url = 'https://gist.githubusercontent.com/UncleDanny/df83f58ece59cb4b35d830fd40594b67/raw/c847445b6d5b5e2e19ce1475ac444f7cbac14e62/utopia.json';
+        this.url = 'https://gist.githubusercontent.com/UncleDanny/df83f58ece59cb4b35d830fd40594b67/raw/utopia.json';
         this.data = null;
     }
 
